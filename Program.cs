@@ -65,8 +65,14 @@ namespace GreenLumaLock
                     }
                     Console.WriteLine("Starting steam with greenluma..");
                     Process.Start(Program.GLInjectorPath).WaitForExit();
-                    Console.WriteLine("Greenluma started.");
-                    Process.Start(Assembly.GetExecutingAssembly().Location, "lock");
+                    ProcessStartInfo lockwatcher = new ProcessStartInfo
+                    {
+                        FileName = Assembly.GetExecutingAssembly().Location,
+                        Arguments = "lock",
+                        UseShellExecute = true,
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    };
+                    Process.Start(lockwatcher);
                     exitCode = 32;
                 }
             }
