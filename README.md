@@ -82,7 +82,7 @@ When using it in scripts, always pass a dummy argument (e.g., `noninteractive`) 
 
 ## 🛠 Troubleshooting
 
-* **Invalid State (Exit 15):** This happens if your PC crashes or the watcher is force-closed via Task Manager while Steam was running. The `greenluma.lock` file wasn't deleted.
+* **Invalid State (Exit 15):** This happens if your PC crashed and the `greenluma.lock` file wasn't deleted.
     * **Fix:** Manually delete `greenluma.lock` in the folder.
 * **Permissions:** If Steam is installed in a protected folder (e.g., `Program Files`), ensure Playnite or the script has Administrator privileges to kill/restart the Steam process.
 

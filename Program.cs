@@ -31,10 +31,18 @@ namespace GreenLumaLock
                 Process[] plist = Process.GetProcessesByName("steam");
                 if (plist.Length != 0)
                 {
-                    Console.WriteLine("Active tracking...");
-                    lockFile.Create().Close();
-                    foreach (Process p in plist) p.WaitForExit();
-                    lockFile.Delete();
+                    using (FileStream fs = new FileStream(
+                        lockFile.FullName,
+                        FileMode.Create,
+                        FileAccess.ReadWrite,
+                        FileShare.Read,
+                        64,
+                        FileOptions.DeleteOnClose
+                    ))
+                    {
+                        Console.WriteLine("Active tracking...");
+                        foreach (Process p in plist) p.WaitForExit();
+                    }
                 }
                 Environment.Exit(0);
             }
@@ -58,11 +66,8 @@ namespace GreenLumaLock
                 else //01
                 {
                     Console.WriteLine("No lock file and steam running, killing steam...");
-                    foreach (Process p in Process.GetProcessesByName("steam"))
-                    {
-                        p.Kill();
-                        p.WaitForExit();
-                    }
+                    Process.Start("steam://exit");
+                    foreach (Process p in Process.GetProcessesByName("steam")) p.WaitForExit();
                     Console.WriteLine("Starting steam with greenluma..");
                     Process.Start(Program.GLInjectorPath).WaitForExit();
                     ProcessStartInfo lockwatcher = new ProcessStartInfo
